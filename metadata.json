@@ -1,0 +1,7 @@
+{
+  "name": "Aura Sağlamlıq",
+  "description": "24/7 simptom analizi və səhiyyə dəstəyi təmin edən futuristik, süni intellekt əsaslı tibbi məsləhət platforması.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

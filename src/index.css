@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-medical-cyan: #00f2ff;
+  --color-medical-mint: #00ffaa;
+  --color-medical-purple: #7000ff;
+  --color-medical-blue: #0066ff;
+  --color-medical-gold: #ffcc00;
+  --color-deep-space: #020205;
+}
+
+@layer base {
+  body {
+    @apply bg-deep-space text-white overflow-x-hidden selection:bg-medical-cyan/30;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(0, 102, 255, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(112, 0, 255, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(0, 255, 170, 0.05) 0px, transparent 50%);
+  }
+}
+
+@layer components {
+  .atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .atmosphere::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(0, 255, 170, 0.02) 0%, transparent 60%);
+    filter: blur(150px);
+    animation: rotate-bg 60s linear infinite;
+  }
+
+  .atmosphere::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  @keyframes rotate-bg {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .glass-card {
+    @apply bg-white/[0.01] backdrop-blur-2xl border border-white/[0.05] rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)];
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .glass-card:hover {
+    @apply border-white/[0.1] bg-white/[0.03] -translate-y-1;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 30px rgba(0, 242, 255, 0.03);
+  }
+
+  .glass-card:hover::before {
+    opacity: 1;
+  }
+
+  .medical-glow {
+    filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
+  }
+
+  .btn-primary {
+    @apply px-8 py-4 bg-white text-black rounded-full font-bold 
+           hover:scale-105 transition-all flex items-center gap-3 
+           shadow-[0_10px_30px_rgba(255,255,255,0.1)] active:scale-95 relative overflow-hidden;
+  }
+
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(100%);
+  }
+
+  .btn-secondary {
+    @apply px-8 py-4 bg-white/[0.05] border border-white/[0.1] rounded-full font-bold 
+           hover:bg-white/[0.1] transition-all flex items-center gap-3 active:scale-95;
+  }
+
+  .markdown-body {
+    @apply max-w-none text-white/70 leading-relaxed;
+  }
+
+  .markdown-body p { @apply mb-6 text-lg; }
+  .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    @apply text-white font-serif mb-6 mt-10 block tracking-tight;
+  }
+  .markdown-body h1 { @apply text-6xl; }
+  .markdown-body h2 { @apply text-4xl border-b border-white/5 pb-4; }
+  
+  .markdown-body ul, .markdown-body ol { @apply mb-8 ml-8 list-disc space-y-4; }
+  .markdown-body li { @apply text-white/60 text-xl font-light; }
+  .markdown-body strong { @apply text-medical-cyan font-semibold; }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .bento-item {
+    @apply bg-white/[0.01] backdrop-blur-2xl border border-white/[0.05] rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)]
+           p-8 flex flex-col justify-between;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 255, 0.1); }
+
+.hologram-effect {
+  position: relative;
+}
+
+.hologram-effect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 242, 255, 0.02) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.text-reveal {
+  background: linear-gradient(to right, white 50%, rgba(255,255,255,0.2) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 1s ease;
+}
+
+.text-reveal:hover {
+  background-position: 0% 0;
+}
+
